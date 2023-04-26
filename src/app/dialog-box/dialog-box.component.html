@@ -1,0 +1,25 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="example-form">
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Username</mat-label>
+    <input matInput formControlName="username">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Leave a comment</mat-label>
+    <textarea matInput formControlName="message"></textarea>
+  </mat-form-field>
+
+  <div class="time_block">
+    <input
+      matInput
+      formControlName="datetime"
+      type="datetime-local"
+      step="1"
+    >
+  </div>
+
+  <button mat-raised-button type="submit">Add</button>
+  <button mat-raised-button (click)="onNoClick()" type="button">Cancel</button>
+</form>
+

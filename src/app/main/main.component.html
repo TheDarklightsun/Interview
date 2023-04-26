@@ -1,0 +1,123 @@
+<div class="wrapper">
+  <header class="header-button">
+    <div class="button_add">
+      <button mat-raised-button class="add" (click)="openDialog()">Add</button>
+    </div>
+  </header>
+  <main>
+    <div class="body_left">
+      <header>
+        <div class="title_left">Title</div>
+      </header>
+      <div class="box_left">
+        <mat-card class="cards_box_left"
+                  (click)="selectMessage(message)"
+                  [ngClass]="{ 'active': selectedMessage && selectedMessage.id === message.id }"
+                  *ngFor="let message of messages | paginate:{itemsPerPage:2, currentPage: page, totalItems: totalLength}"
+        >
+          <div class="button_block_delete_cards">
+            <button mat-button [matMenuTriggerFor]="menu_delete_card">Delete</button>
+            <mat-menu #menu_delete_card="matMenu">
+                <span style="width: 100%; display: flex; justify-content: center">
+                  Delete?
+                </span>
+              <button mat-menu-item (click)="deleteItem(message.id)">YES</button>
+              <button mat-menu-item>NO</button>
+            </mat-menu>
+          </div>
+          <mat-card-content class="row_card">
+            <p class="card_content"
+              style="padding-left: 10px;">Id: {{message.id}}
+              <button class="p_button_delete" mat-button [matMenuTriggerFor]="menu_delete_id">X</button>
+              <mat-menu #menu_delete_id="matMenu">
+                <span style="width: 100%; display: flex; justify-content: center">
+                  Delete?
+                </span>
+                <button mat-menu-item>YES</button>
+                <button mat-menu-item>NO</button>
+              </mat-menu>
+            </p>
+            <p style="padding-left: 10px">Name: {{message.username}}
+              <button class="p_button_delete" mat-button [matMenuTriggerFor]="menu_delete_name">X</button>
+              <mat-menu #menu_delete_name="matMenu">
+                <span style="width: 100%; display: flex; justify-content: center">
+                  Delete?
+                </span>
+                <button mat-menu-item (click)="deleteMessageByUsername(message.username)">YES</button>
+                <button mat-menu-item>NO</button>
+              </mat-menu>
+            </p>
+            <p style="padding-left: 10px">
+              Message: {{message.message | slice:0:10}}{{message.message.length > 10 ? '...' : ''}}
+              <button class="p_button_delete" mat-button [matMenuTriggerFor]="menu_delete_text">X</button>
+              <mat-menu #menu_delete_text="matMenu">
+                <span style="width: 100%; display: flex; justify-content: center">
+                  Delete?
+                </span>
+                <button mat-menu-item>YES</button>
+                <button mat-menu-item>NO</button>
+              </mat-menu>
+            </p>
+            <p style="padding-left: 10px">Date: {{message.datetime}}
+              <button class="p_button_delete" mat-button [matMenuTriggerFor]="menu_delete_date">X</button>
+              <mat-menu #menu_delete_date="matMenu">
+                <span style="width: 100%; display: flex; justify-content: center">
+                  Delete?
+                </span>
+                <button mat-menu-item>YES</button>
+                <button mat-menu-item>NO</button>
+              </mat-menu>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <footer>
+        <div class="nav_link_pagination">
+          <pagination-controls (pageChange)="page=$event"></pagination-controls>
+        </div>
+      </footer>
+    </div>
+    <div class="body_right">
+      <div class="title_right">Side panel</div>
+      <div class="box_right">
+        <mat-card class="cards_box_right">
+          <mat-card-content class="title_cards">Title</mat-card-content>
+            <div *ngIf="selectedMessage" class="sidebar">
+              <h2>Selected message:</h2>
+              <p>ID: {{ selectedMessage?.id }}</p>
+              <p>Name: {{ selectedMessage?.username }}</p>
+              <p>Message: {{ selectedMessage?.message }}</p>
+              <p>Date: {{ selectedMessage?.datetime }}</p>
+              <div class="overlay" [hidden]="!showDialog">
+                <div class="dialog">
+                  <h2>Edit Message</h2>
+                  <input
+                    type="number"
+                    matInput
+                    [(ngModel)]="selectedMessage.id"
+                  >
+                  <input
+                    matInput
+                    [(ngModel)]="selectedMessage.username"
+                  >
+                  <textarea matInput
+                            [(ngModel)]="selectedMessage.message"
+                  >
+                  </textarea>
+                  <button mat-button (click)="saveChanges()">Save</button>
+                  <button mat-button (click)="closeDialog()">Cancel</button>
+                </div>
+              </div>
+            </div>
+        </mat-card>
+      </div>
+
+
+      <div class="footer_change">
+        <button mat-raised-button class="button_change" (click)="showEditDialog()">
+          Change
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
