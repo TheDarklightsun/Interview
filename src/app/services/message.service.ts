@@ -28,14 +28,14 @@ export class MessageService {
     return this.http.delete<any>(`${this.url}/${id}`)
   }
 
+//TODO: попытка удаления одного элемента message
+  deleteMessageByContent(message: string) {
+    console.log(`"${message}"`);
+    return this.http.delete(`${this.url}/${message}`);
+  }
+
   //TODO: обновление данных
   updateData(message: IMessage) {
     return this.http.put<any>(`${this.url}/${message.id}`, message)
-  }
-
-  //TODO: попытка удаления одного элемента username
-  deleteMessageByUsername(username: string) {
-    console.log(`Sending delete request for message with username "${username}"`);
-    return this.http.delete<any>(`${this.url}/${username}`);
   }
 }
