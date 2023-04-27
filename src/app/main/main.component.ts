@@ -20,6 +20,10 @@ export class MainComponent implements OnInit{
   selectedMessageId: any;
   selectedMessageUser: any;
   selectedMessageMessage: any;
+
+  selectedMessageDeleteUser: any;
+  selectedMessageDeleteMessage: any;
+
   showDialog: boolean = false;
   showIdElem: boolean = false;
   showUserElem: boolean = false;
@@ -36,6 +40,39 @@ export class MainComponent implements OnInit{
       this.messages = data;
     })
   }
+
+  //TODO: Обработчик клика на кнопку delete user
+  MessageDeleteUser(message: any) {
+    this.selectedMessageDeleteUser = message;
+  }
+
+  //TODO: удаление User
+  saveChangesDeleteUser() {
+    this.selectedMessageDeleteUser.username = '';
+    this.MessageService.updateData(this.selectedMessageDeleteUser).subscribe(() => {
+      const index = this.messages.findIndex(m => m.id === this.selectedMessageDeleteUser.id);
+
+      this.messages[index] = this.selectedMessageDeleteUser;
+    });
+    this.closeDialog();
+  }
+
+  //TODO: Обработчик клика на кнопку delete message
+  MessageDeleteMessage(message: any) {
+    this.selectedMessageDeleteMessage = message;
+  }
+
+  //TODO: удаление message
+  saveChangesDeleteMessage() {
+    this.selectedMessageDeleteMessage.message = '';
+    this.MessageService.updateData(this.selectedMessageDeleteMessage).subscribe(() => {
+      const index = this.messages.findIndex(m => m.id === this.selectedMessageDeleteMessage.id);
+
+      this.messages[index] = this.selectedMessageDeleteMessage;
+    });
+    this.closeDialog();
+  }
+
 
   //TODO: Обработчик клика на строку таблицы id
   selectMessage(message: any) {
@@ -132,18 +169,6 @@ export class MainComponent implements OnInit{
   updateData(message: IMessage) {
     this.MessageService.postProduct(message).subscribe((data) => {
     });
-  }
-
-  //TODO: попытка удалить элемент message
-  removeItem(message: string) {
-    console.log(message);
-
-    this.MessageService.deleteMessageByContent(message).subscribe(() => this.messages.find( (item) => {
-      if (message == item.message) {
-        let idx = this.messages.findIndex((data) => data.message === message);
-        this.messages.splice(idx,1);
-      }
-    }));
   }
 
   ngOnDestroy() {
